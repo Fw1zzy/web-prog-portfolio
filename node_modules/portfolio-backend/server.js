@@ -25,7 +25,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL, "http://localhost:5173"] : "http://localhost:5173",
+  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL, "http://localhost:5173"] : "https://portfolio-backend-i1da.onrender.com/api",
   credentials: true,
   optionsSuccessStatus: 200,
 };
