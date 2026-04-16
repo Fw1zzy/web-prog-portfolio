@@ -3,6 +3,7 @@ services:
     name: portfolio-backend
     runtime: node
     plan: free
+    rootDir: backend
     branch: main
     buildCommand: npm install
     startCommand: npm start
