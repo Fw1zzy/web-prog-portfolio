@@ -65,14 +65,6 @@ const authLimiter = rateLimit({
 app.use("/api/auth/login", authLimiter);
 app.use("/api/auth/register", authLimiter);
 
-// CORS configuration - support multiple origins for dev and production
-const corsOptions = {
-  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL, "http://localhost:5173"] : "http://localhost:5173",
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
-
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
