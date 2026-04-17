@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Lockfile (generated per-platform)
+package-lock.json
+
 # Environment variables
 .env
 .env.local
