@@ -17,15 +17,15 @@ export const createMessage = asyncHandler(async (req, res) => {
     user: req.user?.id,
   });
 
-  try {
-    await sendContactEmails({ fullname, email, subject, message, sendUserCopy });
-  } catch (emailError) {
-    console.error("Failed to send contact email:", emailError.message);
-  }
-
   res
     .status(201)
     .json({ message: "Message sent successfully", data: newMessage });
+
+  sendContactEmails({ fullname, email, subject, message, sendUserCopy }).catch(
+    (emailError) => {
+      console.error("Failed to send contact email:", emailError.message);
+    },
+  );
 });
 
 export const getMessages = asyncHandler(async (req, res) => {
