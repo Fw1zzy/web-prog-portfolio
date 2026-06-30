@@ -34,6 +34,8 @@ function Contact() {
   const [errors, setErrors] = useState(INITIAL_ERRORS);
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
+  const [sendUserCopy, setSendUserCopy] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -58,17 +60,21 @@ function Contact() {
     setErrors(newErrors);
     if (!isValid) return;
 
+    setLoading(true);
     try {
       await fetchJson("/messages", {
         method: "POST",
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, sendUserCopy }),
       });
       setResult("Thank you! Your message has been sent successfully.");
       setError("");
       setForm(INITIAL);
+      setSendUserCopy(true);
     } catch (err) {
       setError(err.message);
       setResult("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,6 +123,7 @@ function Contact() {
                 onBlur={handleBlur}
                 required
                 data-form-input
+                disabled={loading}
               />
               <span className="error-message">{errors.fullname}</span>
             </div>
@@ -132,6 +139,7 @@ function Contact() {
                 onBlur={handleBlur}
                 required
                 data-form-input
+                disabled={loading}
               />
               <span className="error-message">{errors.email}</span>
             </div>
@@ -148,6 +156,7 @@ function Contact() {
               onBlur={handleBlur}
               required
               data-form-input
+              disabled={loading}
             />
             <span className="error-message">{errors.subject}</span>
           </div>
@@ -163,13 +172,30 @@ function Contact() {
               required
               data-form-input
               rows="6"
+              disabled={loading}
             ></textarea>
             <span className="error-message">{errors.message}</span>
           </div>
 
-          <button className="form-btn" type="submit">
-            <ion-icon name="paper-plane"></ion-icon>
-            <span>Send Message</span>
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={sendUserCopy}
+                onChange={(e) => setSendUserCopy(e.target.checked)}
+                disabled={loading}
+              />
+              <span>Send me a copy of this message to my email</span>
+            </label>
+          </div>
+
+          <button className="form-btn" type="submit" disabled={loading}>
+            {loading ? (
+              <span className="spinner"></span>
+            ) : (
+              <ion-icon name="paper-plane"></ion-icon>
+            )}
+            <span>{loading ? "Sending..." : "Send Message"}</span>
           </button>
         </form>
       </section>
