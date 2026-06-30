@@ -18,16 +18,16 @@ services:
       - key: GOOGLE_CLIENT_ID
         sync: false
       - key: ADMIN_EMAIL
-        value: admin@portfolio.app
+        value: admin@example.com
       - key: ADMIN_PASSWORD
         sync: false
       - key: ADMIN_FULLNAME
         value: Admin
       - key: CLIENT_URL
-        value: https://your-frontend.vercel.app
+        value: https://emmanuel-pascua-profile.vercel.app
       - key: EMAIL_SERVICE
-        sync: false
+        value: gmail
       - key: EMAIL_USER
-        sync: false
+        value: emmanuelpascua.ph@gmail.com
       - key: EMAIL_PASS
         sync: false
