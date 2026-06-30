@@ -475,17 +475,22 @@ article,
   bottom: 0;
   left: 0;
   width: 100%;
-  background: hsla(0, 0%, 98%, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--jet);
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -4px 20px hsla(0, 0%, 0%, 0.08);
+  background: hsla(0, 0%, 100%, 0.75);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-top: 1px solid hsla(0, 0%, 0%, 0.06);
+  box-shadow: 0 -1px 0 hsla(0, 0%, 0%, 0.04);
   z-index: 5;
 }
 
+.navbar::before {
+  display: none;
+}
+
 [data-theme="dark"] .navbar {
-  background: hsla(240, 1%, 17%, 0.92);
-  border-color: hsl(0, 0%, 22%);
+  background: hsla(240, 2%, 11%, 0.85);
+  border-top-color: hsla(0, 0%, 100%, 0.06);
+  box-shadow: 0 -1px 0 hsla(0, 0%, 100%, 0.04);
 }
 
 .navbar-list {
@@ -493,8 +498,8 @@ article,
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 0 5px;
-  gap: 2px;
+  padding: 10px 6px;
+  gap: 4px;
 }
 
 .navbar-item {
@@ -503,38 +508,65 @@ article,
 }
 
 .navbar-link {
-  color: var(--light-gray);
-  font-size: var(--fs-8);
-  font-weight: var(--fw-500);
-  padding: 14px 8px;
-  transition: all var(--transition-1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  border-radius: 12px;
-  margin: 4px 3px;
-}
-
-.navbar-link ion-icon {
-  font-size: 20px;
+  padding: 10px 8px;
+  margin: 0;
+  border-radius: 14px;
+  color: var(--light-gray);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-1);
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
 }
 
 .navbar-link:hover {
-  color: var(--orange-yellow-crayola);
-  background: hsla(45, 100%, 72%, 0.08);
+  background: hsla(0, 0%, 0%, 0.04);
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .navbar-link:hover {
+  background: hsla(0, 0%, 100%, 0.06);
 }
 
 .navbar-link.active {
-  color: var(--orange-yellow-crayola);
-  background: hsla(45, 100%, 72%, 0.12);
+  background: hsl(0, 0%, 15%);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.12);
 }
 
-.navbar-link.active ion-icon {
-  transform: scale(1.1);
+[data-theme="dark"] .navbar-link.active {
+  background: hsl(0, 0%, 25%);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.25);
 }
 
-/* Navbar logout button styling */
+.navbar-icon {
+  font-size: 20px;
+  transition: transform var(--transition-1);
+}
+
+.navbar-link.active .navbar-icon {
+  transform: scale(1.05);
+  color: hsl(0, 0%, 100%);
+}
+
+.navbar-text {
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Logout button */
 .navbar button.navbar-link {
   background: none;
   border: none;
@@ -545,7 +577,21 @@ article,
 
 .navbar button.navbar-link:hover {
   color: var(--bittersweet-shimmer);
-  background: hsla(0, 43%, 51%, 0.1);
+  background: hsla(0, 43%, 51%, 0.08);
+}
+
+[data-theme="dark"] .navbar button.navbar-link:hover {
+  background: hsla(0, 43%, 51%, 0.12);
+}
+
+.navbar button.navbar-link.active {
+  background: hsl(0, 43%, 51%);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 2px 8px hsla(0, 43%, 51%, 0.25);
+}
+
+.navbar button.navbar-link.active .navbar-icon {
+  color: hsl(0, 0%, 100%);
 }
 
 /*-----------------------------------*\
@@ -1101,6 +1147,38 @@ textarea.form-input {
   background: var(--bg-gradient-yellow-2);
 }
 
+.form-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
+.form-btn:disabled::before {
+  background: var(--bg-gradient-jet);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /*-----------------------------------*\
   #AUTH FORMS
 \*-----------------------------------*/
@@ -1292,6 +1370,11 @@ textarea.form-input {
   color: var(--light-gray);
   font-size: var(--fs-6);
   cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -2146,17 +2229,72 @@ textarea.form-input {
     border-left: none;
     border-right: none;
     border-top: none;
+    background: hsla(0, 0%, 100%, 0.8);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 1px 0 hsla(0, 0%, 0%, 0.04);
+  }
+
+  [data-theme="dark"] .navbar {
+    background: hsla(240, 2%, 11%, 0.88);
+    box-shadow: 0 1px 0 hsla(0, 0%, 100%, 0.04);
+  }
+
+  .navbar-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 2px;
   }
 
   .navbar-link {
     flex-direction: row;
     gap: 8px;
-    padding: 12px 16px;
-    margin: 6px 4px;
+    padding: 10px 16px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    font-size: var(--fs-6);
   }
 
-  .navbar-link ion-icon {
+  .navbar-icon {
     font-size: 18px;
+  }
+
+  .navbar-text {
+    font-size: var(--fs-6);
+  }
+
+  .navbar-link:hover {
+    background: hsla(0, 0%, 0%, 0.04);
+    transform: translateY(-1px);
+  }
+
+  [data-theme="dark"] .navbar-link:hover {
+    background: hsla(0, 0%, 100%, 0.06);
+  }
+
+  .navbar-link.active {
+    background: hsl(0, 0%, 15%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.15);
+    font-weight: var(--fw-500);
+  }
+
+  [data-theme="dark"] .navbar-link.active {
+    background: hsl(0, 0%, 28%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.3);
+  }
+
+  .navbar-link.active .navbar-icon {
+    color: hsl(0, 0%, 100%);
+    transform: scale(1.05);
+  }
+
+  .navbar button.navbar-link.active {
+    background: hsl(0, 43%, 51%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: 0 2px 10px hsla(0, 43%, 51%, 0.3);
   }
 
   main {

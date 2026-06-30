@@ -2,104 +2,88 @@
 
 import { NavLink } from "react-router-dom";
 
+const navItems = [
+  { to: "/", label: "Home", icon: "home-outline" },
+  { to: "/about", label: "About", icon: "person-outline" },
+  { to: "/contact", label: "Contact", icon: "mail-outline" },
+];
+
+const authItems = [
+  { to: "/posts", label: "Posts", icon: "file-tray-outline" },
+  { to: "/profile", label: "Profile", icon: "person-circle-outline" },
+];
+
+export function getNavIcon(item) {
+  return item.icon;
+}
+
 function Navbar({ user, onLogout }) {
   return (
     <nav className="navbar">
       <ul className="navbar-list">
-        <li className="navbar-item">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `navbar-link${isActive ? " active" : ""}`
-            }
-          >
-            Home
-          </NavLink>
-        </li>
-        <li className="navbar-item">
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              `navbar-link${isActive ? " active" : ""}`
-            }
-          >
-            About
-          </NavLink>
-        </li>
-        <li className="navbar-item">
-          <NavLink
-            to="/contact"
-            className={({ isActive }) =>
-              `navbar-link${isActive ? " active" : ""}`
-            }
-          >
-            Contact
-          </NavLink>
-        </li>
-        {user ? (
-          <>
-            <li className="navbar-item">
-              <NavLink
-                to="/posts"
-                className={({ isActive }) =>
-                  `navbar-link${isActive ? " active" : ""}`
-                }
-              >
-                Posts
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  `navbar-link${isActive ? " active" : ""}`
-                }
-              >
-                Profile
-              </NavLink>
-            </li>
-            {user.role === "admin" && (
-              <li className="navbar-item">
+        {navItems.map((item) => (
+          <li className="navbar-item" key={item.to}>
+            <NavLink
+              to={item.to}
+              className={({ isActive }) =>
+                `navbar-link${isActive ? " active" : ""}`
+              }
+            >
+              <ion-icon name={item.icon} className="navbar-icon"></ion-icon>
+              <span className="navbar-text">{item.label}</span>
+            </NavLink>
+          </li>
+        ))}
+        {user
+          ? [
+              ...authItems.map((item) => ({
+                ...item,
+                type: "link",
+              })),
+              ...(user.role === "admin"
+                ? [{ to: "/admin", label: "Admin", icon: "shield-outline", type: "link" }]
+                : []),
+              { label: "Logout", icon: "log-out-outline", type: "button", onClick: onLogout },
+            ].map((item) => (
+              <li className="navbar-item" key={item.to || item.label}>
+                {item.type === "button" ? (
+                  <button
+                    type="button"
+                    className="navbar-link"
+                    onClick={item.onClick}
+                  >
+                    <ion-icon name={item.icon} className="navbar-icon"></ion-icon>
+                    <span className="navbar-text">{item.label}</span>
+                  </button>
+                ) : (
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `navbar-link${isActive ? " active" : ""}`
+                    }
+                  >
+                    <ion-icon name={item.icon} className="navbar-icon"></ion-icon>
+                    <span className="navbar-text">{item.label}</span>
+                  </NavLink>
+                )}
+              </li>
+            ))
+          : [
+              { to: "/login", label: "Login", icon: "log-in-outline" },
+              { to: "/register", label: "Register", icon: "person-add-outline" },
+            ].map((item) => (
+              <li className="navbar-item" key={item.to}>
                 <NavLink
-                  to="/admin"
+                  to={item.to}
                   className={({ isActive }) =>
                     `navbar-link${isActive ? " active" : ""}`
                   }
                 >
-                  Admin
+                  <ion-icon name={item.icon} className="navbar-icon"></ion-icon>
+                  <span className="navbar-text">{item.label}</span>
                 </NavLink>
               </li>
-            )}
-            <li className="navbar-item">
-              <button type="button" className="navbar-link" onClick={onLogout}>
-                Logout
-              </button>
-            </li>
-          </>
-        ) : (
-          <>
-            <li className="navbar-item">
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `navbar-link${isActive ? " active" : ""}`
-                }
-              >
-                Login
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  `navbar-link${isActive ? " active" : ""}`
-                }
-              >
-                Register
-              </NavLink>
-            </li>
-          </>
-        )}
+            ))}
       </ul>
     </nav>
   );
