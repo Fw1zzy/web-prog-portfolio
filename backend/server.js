@@ -74,13 +74,13 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.use(notFound);
-app.use(errorHandler);
-
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, async () => {

@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Message from "../models/Message.js";
+import { sendContactEmails } from "../utils/sendEmail.js";
 
 export const createMessage = asyncHandler(async (req, res) => {
-  const { fullname, email, subject, message } = req.body;
+  const { fullname, email, subject, message, sendUserCopy } = req.body;
   if (!fullname || !email || !subject || !message) {
     res.status(400);
     throw new Error("All fields are required");
@@ -15,6 +16,12 @@ export const createMessage = asyncHandler(async (req, res) => {
     message,
     user: req.user?.id,
   });
+
+  try {
+    await sendContactEmails({ fullname, email, subject, message, sendUserCopy });
+  } catch (emailError) {
+    console.error("Failed to send contact email:", emailError.message);
+  }
 
   res
     .status(201)
